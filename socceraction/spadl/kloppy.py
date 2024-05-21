@@ -86,8 +86,8 @@ def convert_to_actions(
 
     # Convert the dataset to the SPADL coordinate system
     new_dataset = dataset.transform(
-        to_orientation=Orientation.FIXED_HOME_AWAY,  # FIXME
-        to_coordinate_system=_SoccerActionCoordinateSystem(normalized=False),
+        to_orientation=Orientation.BALL_OWNING_TEAM,  # FIXME
+        to_coordinate_system=_SoccerActionCoordinateSystem(),
     )
 
     # Convert the events to SPADL actions
@@ -141,6 +141,18 @@ class _SoccerActionCoordinateSystem(CoordinateSystem):
         return PitchDimensions(
             x_dim=Dimension(0, spadlconfig.field_length),
             y_dim=Dimension(0, spadlconfig.field_width),
+            standardized=False,
+            unit="m",
+            goal_width=7.32,
+            goal_height=2.44,
+            six_yard_width=18.32,
+            six_yard_length=5.5,
+            penalty_area_width=16.5,
+            penalty_area_length=9.1,
+            circle_radius=5.5,
+            corner_radius=1,
+            penalty_spot_distance=11,
+            penalty_arc_radius=9.15,
         )
 
 
@@ -297,7 +309,7 @@ def _parse_shot_event(event: ShotEvent) -> tuple[str, str, str]:
         r = "success"
     elif event.result == ShotResult.OWN_GOAL:
         a = "bad_touch"
-        r = "owngoal"
+        r = "own_goal"
     else:
         r = "fail"
 
