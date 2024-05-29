@@ -1,4 +1,5 @@
 """Kloppy EventDataset to SPADL converter."""
+
 import warnings
 from typing import Any, Optional, cast
 
@@ -37,6 +38,7 @@ from kloppy.domain import (
     TakeOnEvent,
     TakeOnResult,
     VerticalOrientation,
+    MetricPitchDimensions,
 )
 from packaging import version
 from pandera.typing import DataFrame
@@ -138,21 +140,12 @@ class _SoccerActionCoordinateSystem(CoordinateSystem):
 
     @property
     def pitch_dimensions(self) -> PitchDimensions:
-        return PitchDimensions(
+        return MetricPitchDimensions(
             x_dim=Dimension(0, spadlconfig.field_length),
             y_dim=Dimension(0, spadlconfig.field_width),
             standardized=False,
-            unit="m",
-            goal_width=7.32,
-            goal_height=2.44,
-            six_yard_width=18.32,
-            six_yard_length=5.5,
-            penalty_area_width=16.5,
-            penalty_area_length=9.1,
-            circle_radius=5.5,
-            corner_radius=1,
-            penalty_spot_distance=11,
-            penalty_arc_radius=9.15,
+            pitch_length=spadlconfig.field_length,
+            pitch_width=spadlconfig.field_width,
         )
 
 
